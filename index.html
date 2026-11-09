@@ -3,321 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không Gian Ngồi Thiền - Bình An Trong Hiện Tại</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+    <title>Ngồi Thiền Cùng Nhau</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #090d16;
-            color: #e2e8f0;
-            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Pulsating Breath Guide Animation */
-        @keyframes breathe {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.25;
-                box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
-            }
-            50% {
-                transform: scale(1.4);
-                opacity: 0.6;
-                box-shadow: 0 0 80px rgba(129, 140, 248, 0.4);
-            }
+        /* Lớp phủ hình nền hồ nước và rừng cây */
+        .bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Hình ảnh hồ nước và rừng cây từ Unsplash */
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
         }
 
-        .breathe-circle {
-            transition: all 0.5s ease-in-out;
+        /* Lớp phủ tối màu để làm nổi bật chữ và vòng tròn thiền */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
         }
 
-        .is-meditating .breathe-circle {
-            animation: breathe 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
         }
 
-        /* Ambient Glow Backdrop */
-        .ambient-bg {
-            background: radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.8) 0%, rgba(9, 13, 22, 1) 100%);
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* Glassmorphism card */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Vòng tròn hít thở */
+        .meditation-circle {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 2rem auto;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            transition: transform 4s ease-in-out;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
+        .meditation-circle.inhale {
+            transform: scale(1.25);
+            background: rgba(255, 255, 255, 0.25);
         }
-        ::-webkit-scrollbar-track {
-            background: #090d16;
+
+        .meditation-circle.exhale {
+            transform: scale(1);
+            background: rgba(255, 255, 255, 0.15);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 3px;
+
+        #status-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        #timer {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Nút bấm điều khiển */
+        .btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            color: #ffffff;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between items-center relative ambient-bg select-none px-4 py-8">
+<body>
 
-    <!-- Subtle Floating Stars/Glow -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-900/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-80 h-80 bg-teal-900/15 rounded-full blur-3xl"></div>
+    <!-- Khung hình nền và lớp phủ -->
+    <div class="bg-container"></div>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <h1>Thở & Kết Nối Nội Tâm</h1>
+
+        <div class="meditation-circle" id="circle">
+            <div id="status-text">Bấm Bắt Đầu</div>
+            <div id="timer">00:00</div>
+        </div>
+
+        <button class="btn" id="start-btn" onclick="toggleMeditation()">Bắt Đầu Thiền</button>
     </div>
 
-    <!-- Header & Mindfulness Quote -->
-    <header class="z-10 text-center max-w-xl mx-auto mt-4">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/50 text-xs text-teal-300 mb-4 backdrop-blur-md">
-            <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
-            <span>Không Gian Tỉnh Thức</span>
-        </div>
-        <h1 class="text-3xl md:text-4xl font-light tracking-wide text-slate-100">Ngồi Thiền Cùng Nhau</h1>
-        <p id="quote" class="mt-3 text-slate-400 italic text-sm md:text-base font-light px-4 transition-opacity duration-700">
-            "Hít vào tâm tĩnh lặng, thở ra miệng mỉm cười."
-        </p>
-    </header>
-
-    <!-- Main Meditation Canvas Area -->
-    <main class="z-10 w-full max-w-md my-auto flex flex-col items-center justify-center">
-        
-        <!-- Breathing Visualizer Container -->
-        <div id="meditationContainer" class="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center my-6">
-            <!-- Animated Breathing Circle Layer -->
-            <div class="breathe-circle absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/20 to-indigo-500/20 border border-teal-400/30"></div>
-            
-            <!-- Secondary Ambient Ring -->
-            <div class="absolute w-48 h-48 md:w-60 md:h-60 rounded-full border border-slate-700/40 opacity-50"></div>
-
-            <!-- Central Timer Display -->
-            <div class="relative z-10 flex flex-col items-center justify-center">
-                <span id="timerDisplay" class="text-5xl md:text-6xl font-light tracking-wider text-slate-100 font-mono">
-                    05:00
-                </span>
-                <span id="breathInstruction" class="text-xs uppercase tracking-widest text-teal-400/80 mt-2 font-medium opacity-0 transition-opacity duration-500">
-                    Hít Vào ... Thở Ra
-                </span>
-            </div>
-        </div>
-
-        <!-- Duration Selection Controls -->
-        <div id="controlsPreset" class="w-full grid grid-cols-4 gap-2 mb-6">
-            <button onclick="setDuration(5)" class="preset-btn px-3 py-2 rounded-xl text-sm font-medium glass-panel text-slate-300 hover:text-white hover:border-teal-500/50 transition-all duration-300">5 Phút</button>
-            <button onclick="setDuration(10)" class="preset-btn px-3 py-2 rounded-xl text-sm font-medium glass-panel text-slate-300 hover:text-white hover:border-teal-500/50 transition-all duration-300">10 Phút</button>
-            <button onclick="setDuration(15)" class="preset-btn px-3 py-2 rounded-xl text-sm font-medium glass-panel text-slate-300 hover:text-white hover:border-teal-500/50 transition-all duration-300">15 Phút</button>
-            <button onclick="setDuration(20)" class="preset-btn px-3 py-2 rounded-xl text-sm font-medium glass-panel text-slate-300 hover:text-white hover:border-teal-500/50 transition-all duration-300">20 Phút</button>
-        </div>
-
-        <!-- Main Action Buttons -->
-        <div class="flex items-center space-x-4">
-            <!-- Play/Pause Button -->
-            <button id="startBtn" onclick="toggleTimer()" class="w-16 h-16 rounded-full bg-gradient-to-r from-teal-500 to-emerald-600 text-slate-950 flex items-center justify-center shadow-lg shadow-teal-500/20 hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none">
-                <!-- Play Icon -->
-                <svg id="playIcon" class="w-7 h-7 ml-1 fill-current" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-                <!-- Pause Icon (Hidden by default) -->
-                <svg id="pauseIcon" class="w-7 h-7 fill-current hidden" viewBox="0 0 24 24">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
-            </button>
-
-            <!-- Reset Button -->
-            <button id="resetBtn" onclick="resetTimer()" class="w-12 h-12 rounded-full glass-panel text-slate-400 hover:text-white flex items-center justify-center hover:border-slate-500 transition-all duration-300 focus:outline-none">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                </svg>
-            </button>
-
-            <!-- Bell Sound Test Button -->
-            <button title="Thử tiếng chuông thiền" onclick="playSingingBowl()" class="w-12 h-12 rounded-full glass-panel text-amber-400 hover:text-amber-300 flex items-center justify-center hover:border-amber-500/40 transition-all duration-300 focus:outline-none">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                </svg>
-            </button>
-        </div>
-
-    </main>
-
-    <!-- Footer Disclaimer -->
-    <footer class="z-10 text-center text-xs text-slate-500 font-light">
-        <p>Thực hành thiền định để tìm lại sự lắng đọng trong tâm hồn.</p>
-    </footer>
-
-    <!-- JavaScript Logic -->
     <script>
-        // State Variables
-        let totalSeconds = 300; // Default: 5 minutes
-        let remainingSeconds = 300;
-        let timerInterval = null;
         let isRunning = false;
+        let timerInterval = null;
+        let totalSeconds = 0;
+        let breathInterval = null;
 
-        // Mindfulness Quotes Collection
-        const quotes = [
-            "\"Hít vào tâm tĩnh lặng, thở ra miệng mỉm cười.\"",
-            "\"Hiện tại là món quà duy nhất mà cuộc sống ban tặng cho bạn.\"",
-            "\"Hãy để tâm trí bạn thanh tĩnh như mặt hồ không sóng.\"",
-            "\"Không có đường đến bình an. Bình an chính là con đường.\"",
-            "\"Buông bỏ những gì đã qua, trân trọng những gì đang có.\""
-        ];
+        const circle = document.getElementById('circle');
+        const statusText = document.getElementById('status-text');
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('start-btn');
 
-        // DOM Elements
-        const timerDisplay = document.getElementById('timerDisplay');
-        const startBtn = document.getElementById('startBtn');
-        const playIcon = document.getElementById('playIcon');
-        const pauseIcon = document.getElementById('pauseIcon');
-        const container = document.getElementById('meditationContainer');
-        const breathInstruction = document.getElementById('breathInstruction');
-        const quoteElem = document.getElementById('quote');
-
-        // Web Audio API Sound Generator (Tibetan Singing Bowl Sound Simulation)
-        let audioCtx = null;
-
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            return audioCtx;
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
-        function playSingingBowl() {
-            try {
-                const ctx = getAudioContext();
-                const now = ctx.currentTime;
+        function runBreathCycle() {
+            // Hít vào (4 giây)
+            statusText.innerText = "Hít Vào...";
+            circle.className = "meditation-circle inhale";
 
-                // Base fundamental frequency (Deep calm tone)
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-
-                // Harmonic overtone for metallic bowl resonance
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-
-                // Frequencies for a soothing bowl sound (~216Hz - A3 tune)
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(216, now);
-
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(432, now); // Harmonic
-
-                // Soft attack & long exponential decay fade out (6 seconds decay)
-                gain1.gain.setValueAtTime(0, now);
-                gain1.gain.linearRampToValueAtTime(0.6, now + 0.1);
-                gain1.gain.exponentialRampToValueAtTime(0.0001, now + 6.0);
-
-                gain2.gain.setValueAtTime(0, now);
-                gain2.gain.linearRampToValueAtTime(0.2, now + 0.08);
-                gain2.gain.exponentialRampToValueAtTime(0.0001, now + 4.5);
-
-                // Connect nodes
-                osc1.connect(gain1);
-                osc2.connect(gain2);
-
-                gain1.connect(ctx.destination);
-                gain2.connect(ctx.destination);
-
-                osc1.start(now);
-                osc2.start(now);
-
-                osc1.stop(now + 6.0);
-                osc2.stop(now + 4.5);
-            } catch (e) {
-                console.log("Audio not allowed yet without user gesture", e);
-            }
-        }
-
-        // Format Seconds to MM:SS Display
-        function updateDisplay() {
-            const minutes = Math.floor(remainingSeconds / 60);
-            const seconds = remainingSeconds % 60;
-            timerDisplay.textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // Set preset time (5, 10, 15, 20 mins)
-        function setDuration(minutes) {
-            if (isRunning) pauseTimer();
-            totalSeconds = minutes * 60;
-            remainingSeconds = totalSeconds;
-            updateDisplay();
-        }
-
-        // Toggle Start / Pause Timer
-        function toggleTimer() {
-            if (isRunning) {
-                pauseTimer();
-            } else {
-                startTimer();
-            }
-        }
-
-        function startTimer() {
-            if (remainingSeconds <= 0) remainingSeconds = totalSeconds;
-
-            // Play starting bell sound
-            playSingingBowl();
-
-            isRunning = true;
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
-            document.body.classList.add('is-meditating');
-            breathInstruction.classList.remove('opacity-0');
-
-            // Rotate random quote for inspiration
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            quoteElem.style.opacity = 0;
             setTimeout(() => {
-                quoteElem.textContent = randomQuote;
-                quoteElem.style.opacity = 1;
-            }, 400);
-
-            timerInterval = setInterval(() => {
-                remainingSeconds--;
-                updateDisplay();
-
-                if (remainingSeconds <= 0) {
-                    onTimerComplete();
-                }
-            }, 1000);
+                if (!isRunning) return;
+                // Thở ra (4 giây)
+                statusText.innerText = "Thở Ra...";
+                circle.className = "meditation-circle exhale";
+            }, 4000);
         }
 
-        function pauseTimer() {
-            isRunning = false;
-            clearInterval(timerInterval);
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
-            document.body.classList.remove('is-meditating');
-            breathInstruction.classList.add('opacity-0');
+        function toggleMeditation() {
+            if (!isRunning) {
+                // Bắt đầu
+                isRunning = true;
+                startBtn.innerText = "Kết Thúc";
+                totalSeconds = 0;
+                timerDisplay.innerText = formatTime(totalSeconds);
+
+                // Đồng hồ đếm thời gian thiền
+                timerInterval = setInterval(() => {
+                    totalSeconds++;
+                    timerDisplay.innerText = formatTime(totalSeconds);
+                }, 1000);
+
+                // Chạy chu kỳ hít thở ngay lập tức và lặp lại mỗi 8 giây
+                runBreathCycle();
+                breathInterval = setInterval(runBreathCycle, 8000);
+
+            } else {
+                // Dừng lại
+                isRunning = false;
+                startBtn.innerText = "Bắt Đầu Thiền";
+                clearInterval(timerInterval);
+                clearInterval(breathInterval);
+
+                statusText.innerText = "Đã hoàn thành";
+                circle.className = "meditation-circle";
+                setTimeout(() => {
+                    statusText.innerText = "Bấm Bắt Đầu";
+                }, 2000);
+            }
         }
-
-        function resetTimer() {
-            pauseTimer();
-            remainingSeconds = totalSeconds;
-            updateDisplay();
-        }
-
-        function onTimerComplete() {
-            pauseTimer();
-            // Play ending bell sound twice for completion signal
-            playSingingBowl();
-            setTimeout(playSingingBowl, 2000);
-
-            // Message update
-            quoteElem.textContent = "Hoàn thành bài thiền. Chúc bạn có một ngày bình an!";
-        }
-
-        // Initial setup on page load
-        updateDisplay();
     </script>
 </body>
 </html>
